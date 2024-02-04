@@ -78,3 +78,18 @@ func TestQueryNotification(t *testing.T) {
 	}
 	t.Logf("%+v", res)
 }
+
+func TestOpenNotification(t *testing.T) {
+	miso.SetLogLevel("debug")
+	rail := _notificationPreTest(t)
+	user := common.User{
+		UserNo:   "UE1049787455160320075953",
+		Username: "admin",
+	}
+	err := OpenNotification(rail, miso.GetMySQL(), OpenNotificationReq{
+		NotifiNo: "notif_1082375466205184155465",
+	}, user)
+	if err != nil {
+		t.Fatal(err)
+	}
+}

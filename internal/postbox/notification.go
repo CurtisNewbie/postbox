@@ -67,7 +67,7 @@ type SaveNotifiReq struct {
 
 func SaveNotification(rail miso.Rail, db *gorm.DB, req SaveNotifiReq, user common.User) error {
 	notifiNo := NotifiNo()
-	err := db.Exec(`insert into notification (user_no, notifi_no, title, message, create_by) values (?, ?, ?, ?, ?)`,
+	err := db.Exec(`insert into notification (user_no, notifi_no, title, message, created_by) values (?, ?, ?, ?, ?)`,
 		req.UserNo, notifiNo, req.Title, req.Message, user.Username).Error
 	if err != nil {
 		return fmt.Errorf("failed to save notifiication record, %+v", req)
@@ -102,7 +102,7 @@ func QueryNotification(rail miso.Rail, db *gorm.DB, req QueryNotificationReq, us
 			return tx
 		},
 		AddSelectQuery: func(tx *gorm.DB) *gorm.DB {
-			return tx.Select("id, notifi_no, title, message, status, create_time").
+			return tx.Select("id, notifi_no, title, message, status, ctime").
 				Order("id desc").
 				Limit(req.Page.GetLimit()).
 				Offset(req.Page.GetOffset())
@@ -119,4 +119,9 @@ func CountNotification(rail miso.Rail, db *gorm.DB, user common.User) (int, erro
 		Where("status = ?", StatusInit).
 		Scan(&count).Error
 	return count, err
+}
+
+func OpenNotification(rail miso.Rail, db *gorm.DB, req OpenNotificationReq, user common.User) error {
+	return db.Exec(`update notification set status = ?, updated_by = ? where notifi_no = ? and user_no = ?`,
+		StatusOpened, user.Username, req.NotifiNo, user.UserNo).Error
 }

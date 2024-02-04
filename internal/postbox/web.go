@@ -32,6 +32,10 @@ func RegisterRoutes(rail miso.Rail) error {
 			miso.Get("/count", CountNotificationEp).
 				Desc("Count received platform notification").
 				Resource(ResourceQueryNotification),
+
+			miso.IPost("/open", OpenNotificationEp).
+				Desc("Record user opened platform notification").
+				Resource(ResourceQueryNotification),
 		),
 	)
 	return nil
@@ -52,4 +56,12 @@ func QueryNotificationEp(c *gin.Context, rail miso.Rail, req QueryNotificationRe
 
 func CountNotificationEp(c *gin.Context, rail miso.Rail) (any, error) {
 	return CountNotification(rail, miso.GetMySQL(), common.GetUser(rail))
+}
+
+type OpenNotificationReq struct {
+	NotifiNo string `valid:"notEmpty"`
+}
+
+func OpenNotificationEp(c *gin.Context, rail miso.Rail, req OpenNotificationReq) (any, error) {
+	return nil, OpenNotification(rail, miso.GetMySQL(), req, common.GetUser(rail))
 }

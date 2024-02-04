@@ -8,10 +8,10 @@ CREATE TABLE IF NOT EXISTS postbox.notification (
   `message` varchar(1000) NOT NULL DEFAULT '' COMMENT 'message',
   `status` varchar(10) NOT NULL DEFAULT 'INIT' COMMENT 'Status: INIT, OPENED',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'when the record is created',
-  `create_by` varchar(255) NOT NULL DEFAULT '' COMMENT 'who created this record',
+  `created_by` varchar(255) NOT NULL DEFAULT '' COMMENT 'who created this record',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'when the record is updated',
-  `update_by` varchar(255) NOT NULL DEFAULT '' COMMENT 'who updated this record',
-  `is_del` tinyint NOT NULL DEFAULT '0' COMMENT '0-normal, 1-deleted',
+  `updated_by` varchar(255) NOT NULL DEFAULT '' COMMENT 'who updated this record',
   PRIMARY KEY (`id`),
-  KEY `user_no_status_idx` (`user_no`, `status`)
+  KEY `user_no_status_idx` (`user_no`, `status`),
+  UNIQUE KEY `notifi_no_uk` (`notifi_no`) 
 ) ENGINE=InnoDB COMMENT='Platform Notification';
