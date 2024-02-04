@@ -20,7 +20,8 @@ redis:
 server:
   host: localhost
   port: 8092
-  gracefulShutdownTimeSec: 5
+  request-log:
+    enabled: "true"
 
 consul:
   enabled: true

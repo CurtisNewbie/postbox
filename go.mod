@@ -4,7 +4,10 @@ go 1.20
 
 require (
 	github.com/curtisnewbie/gocommon v1.1.9
-	github.com/curtisnewbie/miso v0.0.19
+	github.com/curtisnewbie/miso v0.0.20-beta.3
+	github.com/curtisnewbie/user-vault v0.0.14
+	github.com/gin-gonic/gin v1.8.1
+	gorm.io/gorm v1.23.8
 )
 
 require (
@@ -15,7 +18,6 @@ require (
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.8.1 // indirect
 	github.com/go-co-op/gocron v1.17.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
@@ -75,5 +77,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.3.6 // indirect
 	gorm.io/driver/sqlite v1.2.6 // indirect
-	gorm.io/gorm v1.23.8 // indirect
 )
