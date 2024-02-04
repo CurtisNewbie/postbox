@@ -9,6 +9,11 @@ import (
 	"gorm.io/gorm"
 )
 
+const (
+	StatusInit   = "INIT"
+	StatusOpened = "OPENED"
+)
+
 func CreateNotification(rail miso.Rail, db *gorm.DB, req CreateNotificationReq, user common.User) error {
 	if len(req.ReceiverUserNos) < 1 {
 		return nil
@@ -71,4 +76,46 @@ func SaveNotification(rail miso.Rail, db *gorm.DB, req SaveNotifiReq, user commo
 
 func NotifiNo() string {
 	return miso.GenIdP("notif_")
+}
+
+type ListedNotification struct {
+	Id         int
+	NotifiNo   string
+	Title      string
+	Message    string
+	Status     string
+	CreateTime miso.ETime
+}
+
+func QueryNotification(rail miso.Rail, db *gorm.DB, req QueryNotificationReq, user common.User) (miso.PageRes[ListedNotification], error) {
+	q := miso.QueryPageParam[ListedNotification]{
+		ReqPage: req.Page,
+		GetBaseQuery: func(tx *gorm.DB) *gorm.DB {
+			return tx.Table("notification")
+		},
+		ApplyConditions: func(tx *gorm.DB) *gorm.DB {
+			tx = tx.Where("user_no = ?", user.UserNo)
+			if req.Status != "" {
+				tx = tx.Where("status = ?", req.Status)
+			}
+			return tx
+		},
+		AddSelectQuery: func(tx *gorm.DB) *gorm.DB {
+			return tx.Select("id, notifi_no, title, message, status, create_time").
+				Order("id desc").
+				Limit(req.Page.GetLimit()).
+				Offset(req.Page.GetOffset())
+		},
+	}
+	return q.ExecPageQuery(rail, db)
+}
+
+func CountNotification(rail miso.Rail, db *gorm.DB, user common.User) (int, error) {
+	var count int
+	err := db.Table("notification").
+		Select("count(*)").
+		Where("user_no = ?", user.UserNo).
+		Where("status = ?", StatusInit).
+		Scan(&count).Error
+	return count, err
 }

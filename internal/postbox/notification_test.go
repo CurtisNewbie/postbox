@@ -49,3 +49,31 @@ func TestCreateNotification(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestCountNotification(t *testing.T) {
+	miso.SetLogLevel("debug")
+	rail := _notificationPreTest(t)
+	user := common.User{
+		UserNo:   "UE1049787455160320075953",
+		Username: "postbox",
+	}
+	cnt, err := CountNotification(rail, miso.GetMySQL(), user)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(cnt)
+}
+
+func TestQueryNotification(t *testing.T) {
+	miso.SetLogLevel("debug")
+	rail := _notificationPreTest(t)
+	user := common.User{
+		UserNo:   "UE1049787455160320075953",
+		Username: "postbox",
+	}
+	res, err := QueryNotification(rail, miso.GetMySQL(), QueryNotificationReq{}, user)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("%+v", res)
+}

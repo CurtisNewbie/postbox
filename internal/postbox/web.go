@@ -8,15 +8,13 @@ import (
 )
 
 const (
-	ResourceQueryNotification   = "postbox:notification:query"
-	ResourceReceiveNotification = "postbox:notification:receive"
-	ResourceCreateNotification  = "postbox:notification:create"
+	ResourceQueryNotification  = "postbox:notification:query"
+	ResourceCreateNotification = "postbox:notification:create"
 )
 
 func RegisterRoutes(rail miso.Rail) error {
 	goauth.ReportOnBoostrapped(miso.EmptyRail(), []goauth.AddResourceReq{
 		{Code: ResourceQueryNotification, Name: "Query Notifications"},
-		{Code: ResourceReceiveNotification, Name: "Receive Notifications"},
 		{Code: ResourceCreateNotification, Name: "Create Notifications"},
 	})
 
@@ -25,6 +23,14 @@ func RegisterRoutes(rail miso.Rail) error {
 			miso.IPost[CreateNotificationReq]("/create", CreateNotificationEp).
 				Desc("Create platform notification").
 				Resource(ResourceCreateNotification),
+
+			miso.IPost[QueryNotificationReq]("/query", QueryNotificationEp).
+				Desc("Query platform notification").
+				Resource(ResourceQueryNotification),
+
+			miso.Get("/count", CountNotificationEp).
+				Desc("Count received platform notification").
+				Resource(ResourceQueryNotification),
 		),
 	)
 	return nil
@@ -38,4 +44,17 @@ type CreateNotificationReq struct {
 
 func CreateNotificationEp(c *gin.Context, rail miso.Rail, req CreateNotificationReq) (any, error) {
 	return nil, CreateNotification(rail, miso.GetMySQL(), req, common.GetUser(rail))
+}
+
+type QueryNotificationReq struct {
+	Page   miso.Paging
+	Status string
+}
+
+func QueryNotificationEp(c *gin.Context, rail miso.Rail, req QueryNotificationReq) (any, error) {
+	return QueryNotification(rail, miso.GetMySQL(), req, common.GetUser(rail))
+}
+
+func CountNotificationEp(c *gin.Context, rail miso.Rail) (any, error) {
+	return CountNotification(rail, miso.GetMySQL(), common.GetUser(rail))
 }
