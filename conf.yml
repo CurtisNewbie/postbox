@@ -1,0 +1,37 @@
+mode.production: false
+
+app.name: "postbox"
+
+mysql:
+  enabled: true
+  user: root
+  database: postbox
+  host: localhost
+  port: 3306
+
+redis:
+  enabled: true
+  address: localhost
+  port: 6379
+  username:
+  password:
+  database: 0
+
+server:
+  host: localhost
+  port: 8092
+  gracefulShutdownTimeSec: 5
+
+consul:
+  enabled: true
+  consulAddress: localhost:8500
+
+# rabbitmq:
+#   enabled: true
+#   host: localhost
+#   port: 5672
+#   username: guest
+#   password: guest
+#   vhost: "/"
+
+logging.level: info
