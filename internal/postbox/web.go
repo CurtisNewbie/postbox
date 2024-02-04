@@ -4,6 +4,7 @@ import (
 	"github.com/curtisnewbie/gocommon/common"
 	"github.com/curtisnewbie/gocommon/goauth"
 	"github.com/curtisnewbie/miso/miso"
+	"github.com/curtisnewbie/postbox/api"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,7 +21,7 @@ func RegisterRoutes(rail miso.Rail) error {
 
 	miso.BaseRoute("/open/api/v1").With(
 		miso.SubPath("/notification").Group(
-			miso.IPost[CreateNotificationReq]("/create", CreateNotificationEp).
+			miso.IPost[api.CreateNotificationReq]("/create", CreateNotificationEp).
 				Desc("Create platform notification").
 				Resource(ResourceCreateNotification),
 
@@ -36,13 +37,7 @@ func RegisterRoutes(rail miso.Rail) error {
 	return nil
 }
 
-type CreateNotificationReq struct {
-	Title           string `valid:"maxLen:255"`
-	Message         string `valid:"maxLen:1000"`
-	ReceiverUserNos []string
-}
-
-func CreateNotificationEp(c *gin.Context, rail miso.Rail, req CreateNotificationReq) (any, error) {
+func CreateNotificationEp(c *gin.Context, rail miso.Rail, req api.CreateNotificationReq) (any, error) {
 	return nil, CreateNotification(rail, miso.GetMySQL(), req, common.GetUser(rail))
 }
 

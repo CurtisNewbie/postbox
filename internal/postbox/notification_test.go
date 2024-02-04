@@ -5,6 +5,7 @@ import (
 
 	"github.com/curtisnewbie/gocommon/common"
 	"github.com/curtisnewbie/miso/miso"
+	"github.com/curtisnewbie/postbox/api"
 )
 
 func _notificationPreTest(t *testing.T) miso.Rail {
@@ -40,7 +41,7 @@ func TestCreateNotification(t *testing.T) {
 	user := common.User{
 		Username: "postbox",
 	}
-	err := CreateNotification(rail, miso.GetMySQL(), CreateNotificationReq{
+	err := CreateNotification(rail, miso.GetMySQL(), api.CreateNotificationReq{
 		ReceiverUserNos: []string{"UE1049787455160320075953"},
 		Title:           "Some message",
 		Message:         "Notification should be saved",

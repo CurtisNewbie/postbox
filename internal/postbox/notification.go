@@ -5,6 +5,7 @@ import (
 
 	"github.com/curtisnewbie/gocommon/common"
 	"github.com/curtisnewbie/miso/miso"
+	"github.com/curtisnewbie/postbox/api"
 	uservault "github.com/curtisnewbie/user-vault/api"
 	"gorm.io/gorm"
 )
@@ -14,7 +15,7 @@ const (
 	StatusOpened = "OPENED"
 )
 
-func CreateNotification(rail miso.Rail, db *gorm.DB, req CreateNotificationReq, user common.User) error {
+func CreateNotification(rail miso.Rail, db *gorm.DB, req api.CreateNotificationReq, user common.User) error {
 	if len(req.ReceiverUserNos) < 1 {
 		return nil
 	}
