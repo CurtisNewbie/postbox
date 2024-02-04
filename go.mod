@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/curtisnewbie/gocommon v1.1.9
-	github.com/curtisnewbie/miso v0.0.20
+	github.com/curtisnewbie/miso v0.0.21
 	github.com/curtisnewbie/user-vault v0.0.14
 	github.com/gin-gonic/gin v1.8.1
 	gorm.io/gorm v1.23.8
