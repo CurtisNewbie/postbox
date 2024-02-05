@@ -102,7 +102,7 @@ func QueryNotification(rail miso.Rail, db *gorm.DB, req QueryNotificationReq, us
 			return tx
 		},
 		AddSelectQuery: func(tx *gorm.DB) *gorm.DB {
-			return tx.Select("id, notifi_no, title, message, status, ctime").
+			return tx.Select("id, notifi_no, title, message, status, create_time").
 				Order("id desc").
 				Limit(req.Page.GetLimit()).
 				Offset(req.Page.GetOffset())
