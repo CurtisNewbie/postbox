@@ -21,7 +21,7 @@ server:
   host: localhost
   port: 8092
   request-log:
-    enabled: "true"
+    enabled: "false"
 
 consul:
   enabled: true
