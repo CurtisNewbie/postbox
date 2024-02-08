@@ -1,0 +1,15 @@
+FROM alpine:3.17
+
+LABEL author="Yongjie Zhuang"
+LABEL descrption="postbox - notification service"
+
+RUN apk --no-cache add tzdata
+
+WORKDIR /usr/src/
+
+# binary is pre-compiled
+COPY postbox_build ./app_postbox
+
+ENV TZ=Asia/Shanghai
+
+CMD ["./app_postbox", "configFile=/usr/src/config/conf.yml"]
