@@ -1,8 +1,8 @@
 package postbox
 
 import (
+	"github.com/curtisnewbie/gocommon/auth"
 	"github.com/curtisnewbie/gocommon/common"
-	"github.com/curtisnewbie/gocommon/goauth"
 	"github.com/curtisnewbie/miso/miso"
 	"github.com/curtisnewbie/postbox/api"
 	"github.com/gin-gonic/gin"
@@ -14,29 +14,28 @@ const (
 )
 
 func RegisterRoutes(rail miso.Rail) error {
-	goauth.ReportOnBoostrapped(miso.EmptyRail(), []goauth.AddResourceReq{
+	auth.ExposeResourceInfo([]auth.Resource{
 		{Code: ResourceQueryNotification, Name: "Query Notifications"},
 		{Code: ResourceCreateNotification, Name: "Create Notifications"},
 	})
 
-	miso.BaseRoute("/open/api/v1").With(
-		miso.SubPath("/notification").Group(
-			miso.IPost[api.CreateNotificationReq]("/create", CreateNotificationEp).
-				Desc("Create platform notification").
-				Resource(ResourceCreateNotification),
+	miso.BaseRoute("/open/api/v1/notification").Group(
 
-			miso.IPost[QueryNotificationReq]("/query", QueryNotificationEp).
-				Desc("Query platform notification").
-				Resource(ResourceQueryNotification),
+		miso.IPost("/create", CreateNotificationEp).
+			Desc("Create platform notification").
+			Resource(ResourceCreateNotification),
 
-			miso.Get("/count", CountNotificationEp).
-				Desc("Count received platform notification").
-				Resource(ResourceQueryNotification),
+		miso.IPost("/query", QueryNotificationEp).
+			Desc("Query platform notification").
+			Resource(ResourceQueryNotification),
 
-			miso.IPost("/open", OpenNotificationEp).
-				Desc("Record user opened platform notification").
-				Resource(ResourceQueryNotification),
-		),
+		miso.Get("/count", CountNotificationEp).
+			Desc("Count received platform notification").
+			Resource(ResourceQueryNotification),
+
+		miso.IPost("/open", OpenNotificationEp).
+			Desc("Record user opened platform notification").
+			Resource(ResourceQueryNotification),
 	)
 	return nil
 }

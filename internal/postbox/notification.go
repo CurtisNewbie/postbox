@@ -15,6 +15,10 @@ const (
 	StatusOpened = "OPENED"
 )
 
+var (
+	ErrUserNotFound = miso.NewErrf("User not found").WithCode(api.CodeUserNotFound)
+)
+
 func CreateNotification(rail miso.Rail, db *gorm.DB, req api.CreateNotificationReq, user common.User) error {
 	if len(req.ReceiverUserNos) < 1 {
 		return nil
@@ -41,7 +45,7 @@ func CreateNotification(rail miso.Rail, db *gorm.DB, req api.CreateNotificationR
 	futures := aw.Await()
 	for _, f := range futures {
 		if userNo, err := f.Get(); err != nil {
-			return miso.NewErr("User not found", "failed to FindUser, userNo: %v, %v", userNo, err)
+			return ErrUserNotFound.WithInternalMsg("failed to FindUser, userNo: %v, %v", userNo, err)
 		}
 	}
 
