@@ -93,26 +93,24 @@ type ListedNotification struct {
 }
 
 func QueryNotification(rail miso.Rail, db *gorm.DB, req QueryNotificationReq, user common.User) (miso.PageRes[ListedNotification], error) {
-	q := miso.QueryPageParam[ListedNotification]{
-		ReqPage: req.Page,
-		GetBaseQuery: func(tx *gorm.DB) *gorm.DB {
+	return miso.NewPageQuery[ListedNotification]().
+		WithPage(req.Page).
+		WithBaseQuery(func(tx *gorm.DB) *gorm.DB {
 			return tx.Table("notification")
-		},
-		ApplyConditions: func(tx *gorm.DB) *gorm.DB {
+		}).
+		WithSelectQuery(func(tx *gorm.DB) *gorm.DB {
+			tx = tx.Select("id, notifi_no, title, message, status, create_time").
+				Order("id desc").
+				Limit(req.Page.GetLimit()).
+				Offset(req.Page.GetOffset())
+
 			tx = tx.Where("user_no = ?", user.UserNo)
 			if req.Status != "" {
 				tx = tx.Where("status = ?", req.Status)
 			}
 			return tx
-		},
-		AddSelectQuery: func(tx *gorm.DB) *gorm.DB {
-			return tx.Select("id, notifi_no, title, message, status, create_time").
-				Order("id desc").
-				Limit(req.Page.GetLimit()).
-				Offset(req.Page.GetOffset())
-		},
-	}
-	return q.ExecPageQuery(rail, db)
+		}).
+		Exec(rail, db)
 }
 
 func CountNotification(rail miso.Rail, db *gorm.DB, user common.User) (int, error) {

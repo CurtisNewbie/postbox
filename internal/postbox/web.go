@@ -5,7 +5,6 @@ import (
 	"github.com/curtisnewbie/gocommon/common"
 	"github.com/curtisnewbie/miso/miso"
 	"github.com/curtisnewbie/postbox/api"
-	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -40,7 +39,8 @@ func RegisterRoutes(rail miso.Rail) error {
 	return nil
 }
 
-func CreateNotificationEp(c *gin.Context, rail miso.Rail, req api.CreateNotificationReq) (any, error) {
+func CreateNotificationEp(inb *miso.Inbound, req api.CreateNotificationReq) (any, error) {
+	rail := inb.Rail()
 	return nil, CreateNotification(rail, miso.GetMySQL(), req, common.GetUser(rail))
 }
 
@@ -49,11 +49,13 @@ type QueryNotificationReq struct {
 	Status string
 }
 
-func QueryNotificationEp(c *gin.Context, rail miso.Rail, req QueryNotificationReq) (any, error) {
+func QueryNotificationEp(inb *miso.Inbound, req QueryNotificationReq) (any, error) {
+	rail := inb.Rail()
 	return QueryNotification(rail, miso.GetMySQL(), req, common.GetUser(rail))
 }
 
-func CountNotificationEp(c *gin.Context, rail miso.Rail) (any, error) {
+func CountNotificationEp(inb *miso.Inbound) (any, error) {
+	rail := inb.Rail()
 	return CountNotification(rail, miso.GetMySQL(), common.GetUser(rail))
 }
 
@@ -61,6 +63,7 @@ type OpenNotificationReq struct {
 	NotifiNo string `valid:"notEmpty"`
 }
 
-func OpenNotificationEp(c *gin.Context, rail miso.Rail, req OpenNotificationReq) (any, error) {
+func OpenNotificationEp(inb *miso.Inbound, req OpenNotificationReq) (any, error) {
+	rail := inb.Rail()
 	return nil, OpenNotification(rail, miso.GetMySQL(), req, common.GetUser(rail))
 }
