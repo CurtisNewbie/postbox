@@ -3,7 +3,7 @@ module github.com/curtisnewbie/postbox
 go 1.20
 
 require (
-	github.com/curtisnewbie/gocommon v1.1.12-0.20240223134353-f6e3789e77da
+	github.com/curtisnewbie/gocommon v1.1.12
 	github.com/curtisnewbie/miso v0.0.26
 	github.com/curtisnewbie/user-vault v0.0.14
 	gorm.io/gorm v1.23.8
