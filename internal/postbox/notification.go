@@ -122,6 +122,11 @@ func CountNotification(rail miso.Rail, db *gorm.DB, user common.User) (int, erro
 }
 
 func OpenNotification(rail miso.Rail, db *gorm.DB, req OpenNotificationReq, user common.User) error {
-	return db.Exec(`update notification set status = ?, updated_by = ? where notifi_no = ? and user_no = ?`,
+	return db.Exec(`UPDATE notification SET status = ?, updated_by = ? WHERE notifi_no = ? AND user_no = ?`,
 		StatusOpened, user.Username, req.NotifiNo, user.UserNo).Error
+}
+
+func OpenAllNotification(rail miso.Rail, db *gorm.DB, user common.User) error {
+	return db.Exec(`UPDATE notification SET status = ?, updated_by = ? WHERE user_no = ? AND status = ?`,
+		StatusOpened, user.Username, user.UserNo, StatusInit).Error
 }
