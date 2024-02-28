@@ -1,8 +1,8 @@
 package postbox
 
 import (
-	"github.com/curtisnewbie/gocommon/auth"
-	"github.com/curtisnewbie/gocommon/common"
+	"github.com/curtisnewbie/miso/middleware/user-vault/auth"
+	"github.com/curtisnewbie/miso/middleware/user-vault/common"
 	"github.com/curtisnewbie/miso/miso"
 	"github.com/curtisnewbie/postbox/api"
 )
